@@ -1,0 +1,18 @@
+:root {
+  /*color-scheme: dark;*/
+}
+
+html, body {
+  margin: 0;
+}
+
+.cm-editor {
+  height: 100vh;
+}
+
+.expression-result {
+  display: inline;
+  text-indent: 2em;
+  cursor: text;
+  color: red;
+}
