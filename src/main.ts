@@ -34,8 +34,6 @@ import * as math from 'mathjs';
 
 const scope = new Map();
 
-let count = 0;
-
 class ExpressionResultWidget extends WidgetType {
   constructor(readonly result: string) {
     super();
@@ -131,9 +129,8 @@ new EditorView({
         return Decoration.set([]);
       },
       update(value, transaction) {
-        count++;
-        return decorate(transaction);
-        //return value.map(transaction.changes);
+        if (transaction.docChanged) return decorate(transaction);
+        return value.map(transaction.changes);
       },
       provide: (f) => EditorView.decorations.from(f),
     }),
