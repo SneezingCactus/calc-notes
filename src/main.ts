@@ -1,7 +1,4 @@
 import './style.css';
-// import typescriptLogo from './typescript.svg'
-// import viteLogo from '/vite.svg'
-// import { setupCounter } from './counter.ts'
 
 import {
   keymap,
@@ -13,6 +10,7 @@ import {
   crosshairCursor,
   lineNumbers,
   highlightActiveLineGutter,
+  scrollPastEnd,
 } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import {
@@ -63,18 +61,15 @@ function decorate(transaction: Transaction): RangeSet<Decoration> {
 
   scope.clear();
 
-  let counter = 0;
+  for (let i = 0; i < transaction.newDoc.lines; i++) {
+    const line = transaction.newDoc.line(i + 1);
 
-  for (const line of transaction.newDoc.iterLines()) {
     let result;
 
     try {
-      result = math.evaluate(line, scope);
+      result = math.evaluate(line.text, scope);
 
-      if (result === undefined || typeof result === 'function') {
-        counter += line.length + 1;
-        continue;
-      }
+      if (result === undefined || typeof result === 'function') continue;
 
       if (result.type == 'Fraction') {
         result = result.toFraction();
@@ -85,12 +80,12 @@ function decorate(transaction: Transaction): RangeSet<Decoration> {
       result = (e as Error).message;
     }
 
-    let deco = Decoration.widget({
-      widget: new ExpressionResultWidget(result),
-      side: 1,
-    });
-    widgets.push(deco.range(counter + line.length));
-    counter += line.length + 1;
+    widgets.push(
+      Decoration.widget({
+        widget: new ExpressionResultWidget(result),
+        side: 1,
+      }).range(line.to),
+    );
   }
 
   return widgets.length > 0 ? RangeSet.of(widgets) : Decoration.none;
@@ -116,6 +111,7 @@ new EditorView({
     crosshairCursor(),
     highlightActiveLine(),
     highlightSelectionMatches(),
+    scrollPastEnd(),
     keymap.of([
       ...closeBracketsKeymap,
       ...defaultKeymap,
