@@ -1,3 +1,4 @@
+import App from './App.svelte';
 import './style.css';
 
 import {
@@ -90,6 +91,10 @@ function decorate(transaction: Transaction): RangeSet<Decoration> {
 
   return widgets.length > 0 ? RangeSet.of(widgets) : Decoration.none;
 }
+
+const app = new App({
+  target: document.body,
+});
 
 new EditorView({
   doc: '',
