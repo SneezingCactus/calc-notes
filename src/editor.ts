@@ -141,11 +141,10 @@ export async function initEditor(editorParent: HTMLElement) {
   });
 
   const urlParams = new URLSearchParams(window.location.search);
-  const noPasteId = urlParams.get('p'); // id for temporary nopaste.net url
-  const sharedText = urlParams.get('s'); // alternative share method that bundles entire text in url
+  const pasteId = urlParams.get('p'); // shared paste id
 
-  if (noPasteId) {
-    const res = await fetch(`https://nopaste.net/${noPasteId}`);
+  if (pasteId) {
+    const res = await fetch(`https://pastebin.com/raw/${pasteId}`);
 
     if (res.ok) {
       const text = await res.text();
@@ -154,12 +153,6 @@ export async function initEditor(editorParent: HTMLElement) {
         changes: { from: 0, to: editorView.state.doc.toString().length, insert: text },
       });
     }
-  } else if (sharedText) {
-    const text = lzstring.decompressFromBase64(sharedText);
-
-    editorView.dispatch({
-      changes: { from: 0, to: editorView.state.doc.toString().length, insert: text },
-    });
   }
 }
 
@@ -208,18 +201,18 @@ export function exportFile(fileName: string) {
   saveAs(new Blob([editorView.state.doc.toString()], { type: 'text/plain;charset=utf-8' }), `${fileName}.txt`);
 }
 
-export async function getShareLink(temporary: boolean = true) {
-  if (temporary) {
-    const res = await fetch('https://nopaste.net/random?t=730d&f=json', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: editorView.state.doc.toString(),
-    });
+export async function getShareLink() {
+  const res = await fetch('https://calc-notes-workers.sneezingcactus452.workers.dev/api/share', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: editorView.state.doc.toString(),
+  });
 
-    const data = await res.json();
+  if (res.ok) {
+    const pasteId = await res.text();
 
-    return `${location.origin}${location.pathname}?p=${data.file}`;
+    return `${location.origin}${location.pathname}?p=${pasteId}`;
   } else {
-    return `${location.origin}${location.pathname}?s=${lzstring.compressToBase64(editorView.state.doc.toString())}`;
+    return 'Failed to get share link';
   }
 }

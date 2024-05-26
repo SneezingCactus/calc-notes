@@ -9,9 +9,6 @@ body {
   --panel-bg: #{map-get($theme, 'mantle')};
   --secondary-panel-bg: #{map-get($theme, 'crust')};
 
-  --warning-panel-bg: #{color.adjust(map-get($theme, 'yellow'), $alpha: -0.8)};
-  --warning-panel-text: #{color.adjust(map-get($theme, 'yellow'), $alpha: 1)};
-
   --active-line-bg: #{color.adjust(map-get($theme, 'text'), $alpha: -0.9)};
   --gutters-bg: #{map-get($theme, 'mantle')};
   --gutters-border: #{map-get($theme, 'surface1')};
@@ -23,6 +20,7 @@ body {
 
   --button-bg: #{map-get($theme, 'surface0')};
   --button-hover-bg: #{map-get($theme, 'surface1')};
+  --button-active-bg: #{map-get($theme, 'mantle')};
   --text: #{map-get($theme, 'text')};
   --subtext: #{map-get($theme, 'subtext0')};
   --result-text: #{map-get($theme, 'red')};
@@ -131,11 +129,11 @@ body {
       background: var(--button-hover-bg);
     }
   }
-}
 
-.expression-result {
-  display: inline;
-  cursor: text;
-  color: var(--result-text);
-  text-indent: 2em;
+  .expression-result {
+    display: inline;
+    cursor: text;
+    color: var(--result-text);
+    text-indent: 2em;
+  }
 }

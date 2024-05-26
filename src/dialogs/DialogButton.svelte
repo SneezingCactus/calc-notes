@@ -25,5 +25,9 @@
     &:hover {
       background: var(--button-hover-bg);
     }
+
+    &:active {
+      background: var(--button-active-bg);
+    }
   }
 </style>
