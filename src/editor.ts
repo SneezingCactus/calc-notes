@@ -144,7 +144,7 @@ export async function initEditor(editorParent: HTMLElement) {
   const pasteId = urlParams.get('p'); // shared paste id
 
   if (pasteId) {
-    const res = await fetch(`https://pastebin.com/raw/${pasteId}`);
+    const res = await fetch(`https://calc-notes-workers.sneezingcactus452.workers.dev/api/share?p=${pasteId}`);
 
     if (res.ok) {
       const text = await res.text();
