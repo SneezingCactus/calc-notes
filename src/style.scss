@@ -1,0 +1,141 @@
+@use 'sass:color';
+@use 'sass:map';
+@use '@catppuccin/palette/scss/catppuccin';
+
+body {
+  $theme: map-get(catppuccin.$palette, 'macchiato');
+
+  --base: #{map-get($theme, 'base')};
+  --panel-bg: #{map-get($theme, 'mantle')};
+  --secondary-panel-bg: #{map-get($theme, 'crust')};
+
+  --warning-panel-bg: #{color.adjust(map-get($theme, 'yellow'), $alpha: -0.8)};
+  --warning-panel-text: #{color.adjust(map-get($theme, 'yellow'), $alpha: 1)};
+
+  --active-line-bg: #{color.adjust(map-get($theme, 'text'), $alpha: -0.9)};
+  --gutters-bg: #{map-get($theme, 'mantle')};
+  --gutters-border: #{map-get($theme, 'surface1')};
+  --gutters-text: #{map-get($theme, 'surface1')};
+  --gutters-active-line-text: #{map-get($theme, 'lavender')};
+  --cursor: #{map-get($theme, 'rosewater')};
+  --selection-bg: #{color.adjust(map-get($theme, 'surface2'), $alpha: -0.75)};
+  --search-bg: #{color.adjust(map-get($theme, 'teal'), $alpha: -0.5)};
+
+  --button-bg: #{map-get($theme, 'surface0')};
+  --button-hover-bg: #{map-get($theme, 'surface1')};
+  --text: #{map-get($theme, 'text')};
+  --subtext: #{map-get($theme, 'subtext0')};
+  --result-text: #{map-get($theme, 'red')};
+  --scrollbar-thumb: #{map-get($theme, 'surface1')};
+}
+
+html,
+body {
+  margin: 0;
+  background-color: var(--base);
+  overscroll-behavior: contain;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Open Sans',
+    'Helvetica Neue',
+    sans-serif;
+}
+
+* {
+  color: var(--text);
+
+  &::-webkit-scrollbar {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+  }
+}
+
+.cm-editor {
+  /*height: 100vh;*/
+  height: 100%;
+
+  color: var(--text);
+
+  .cm-gutters {
+    border-right: none;
+    background-color: var(--gutters-bg);
+    background-color: transparent;
+  }
+
+  .cm-gutterElement {
+    color: var(--gutters-text);
+  }
+
+  .cm-selectionBackground,
+  &::selection {
+    background: var(--selection-bg) !important;
+  }
+
+  .cm-selectionMatch {
+    box-shadow: 0px 0px 0px 1px var(--text);
+    background: var(--selection-bg);
+  }
+
+  .cm-searchMatch {
+    background-color: var(--search-bg);
+  }
+
+  .cm-cursor {
+    border-left-color: var(--cursor);
+  }
+
+  .cm-activeLine {
+    background-color: var(--active-line-bg);
+  }
+
+  .cm-gutterElement.cm-activeLineGutter {
+    background-color: var(--active-line-bg);
+    //background-color: transparent;
+    color: var(--gutters-active-line-text);
+  }
+
+  .cm-panels-bottom {
+    border: none;
+  }
+
+  .cm-panel {
+    background-color: var(--panel-bg);
+  }
+
+  .cm-textfield {
+    border: none;
+    background-color: var(--secondary-panel-bg);
+    color: var(--text);
+  }
+
+  .cm-button {
+    border: none;
+    border-radius: 4px;
+    background: var(--button-bg);
+    padding: 5px;
+    color: var(--text);
+    line-height: 1;
+
+    &:hover {
+      background: var(--button-hover-bg);
+    }
+  }
+}
+
+.expression-result {
+  display: inline;
+  cursor: text;
+  color: var(--result-text);
+  text-indent: 2em;
+}

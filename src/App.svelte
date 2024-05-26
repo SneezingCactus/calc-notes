@@ -1,22 +1,28 @@
 <script lang="ts">
-  import ActionBar from "./ActionBar.svelte";
-
+  import MenuBar from './menu_bar/MenuBar.svelte';
+  import ExportDialog from './dialogs/ExportDialog.svelte';
+  import ShareDialog from './dialogs/ShareDialog.svelte';
 </script>
 
 <div id="app-container">
-  <ActionBar></ActionBar>
-  <div id="code-container"></div>
+  <MenuBar></MenuBar>
+  <div id="editor-container"></div>
+  <ExportDialog></ExportDialog>
+  <ShareDialog></ShareDialog>
 </div>
 
 <style>
   #app-container {
     display: flex;
-    width: 100%;
-    height: 100%;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
   }
 
-  #code-container {
-    width: 100%;
+  #editor-container {
     flex-grow: 1;
+    flex-basis: 0;
+    width: 100%;
+    overflow-y: auto;
   }
 </style>
