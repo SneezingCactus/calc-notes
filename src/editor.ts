@@ -28,10 +28,22 @@ import { autocompletion, completionKeymap, closeBrackets, closeBracketsKeymap } 
 import { WidgetType, EditorView, Decoration } from '@codemirror/view';
 import { StateField, Range, RangeSet, Transaction } from '@codemirror/state';
 
-import * as math from 'mathjs';
-
 import lzstring from 'lz-string';
 import { saveAs } from 'file-saver';
+
+import { create, all } from 'mathjs';
+
+const math = create(all);
+
+math.import({
+  fromPol: function (r: number, phi: math.Unit) {
+    return math.complex({ r, phi: phi.toNumber('rad') });
+  },
+  asPol: function (value: math.Complex) {
+    const polar = value.toPolar();
+    return `${polar.r} ∠ ${math.unit(polar.phi, 'rad').to('deg')}`;
+  },
+});
 
 const scope = new Map();
 
