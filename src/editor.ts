@@ -39,8 +39,9 @@ math.import({
   fromPol: function (r: number, phi: math.Unit) {
     return math.complex({ r, phi: phi.toNumber('rad') });
   },
-  asPol: function (value: math.Complex) {
-    const polar = value.toPolar();
+  asPol: function (x: math.Complex | math.Unit) {
+    // @ts-ignore
+    const polar = x.type == 'Unit' ? x.value.toPolar() : x.toPolar();
     return `${polar.r} ∠ ${math.unit(polar.phi, 'rad').to('deg')}`;
   },
 });
