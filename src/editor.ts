@@ -35,6 +35,21 @@ import { create, all } from 'mathjs';
 
 const math = create(all);
 
+let outputPrecision = 3;
+
+function stringifyMath(x: any) {
+  if (typeof x === 'string') return x;
+
+  switch (x.type) {
+    case 'Unit':
+      const valuelessUnit = x.clone();
+      valuelessUnit.value = null;
+      return math.string(math.round(x, outputPrecision, valuelessUnit));
+    default:
+      return math.string(math.round(x, outputPrecision));
+  }
+}
+
 math.import({
   fromPol: function (r: number, phi: math.Unit) {
     return math.complex({ r, phi: phi.toNumber('rad') });
@@ -42,7 +57,7 @@ math.import({
   asPol: function (x: math.Complex | math.Unit) {
     // @ts-ignore
     const polar = x.type == 'Unit' ? x.value.toPolar() : x.toPolar();
-    return `${polar.r} ∠ ${math.unit(polar.phi, 'rad').to('deg')}`;
+    return `${stringifyMath(polar.r)} ∠ ${stringifyMath(math.unit(polar.phi, 'rad').to('deg'))}`;
   },
 });
 
@@ -89,7 +104,7 @@ function decorate(transaction: Transaction): RangeSet<Decoration> {
       if (result.type == 'Fraction') {
         result = result.toFraction();
       } else {
-        result = math.string(result);
+        result = stringifyMath(result);
       }
     } catch (e) {
       result = (e as Error).message;
