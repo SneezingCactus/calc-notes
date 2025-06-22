@@ -35,7 +35,7 @@ import { create, all } from 'mathjs';
 
 const math = create(all);
 
-let outputPrecision = 3;
+let outputPrecision = 9;
 
 function stringifyMath(x: any) {
   if (typeof x === 'string') return x;
